@@ -9,7 +9,7 @@ const pool = new Pool({
 });
 
 // 2. Wrap the pool in Prisma's official adapter
-const adapter = new PrismaPg({ pool });
+const adapter = new PrismaPg(pool);
 
 // 3. Pass the adapter directly into the Prisma Client constructor
 const prisma = new PrismaClient({ adapter });
