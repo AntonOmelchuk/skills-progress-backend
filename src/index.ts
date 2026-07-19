@@ -1,4 +1,5 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import type { Request, Response } from "express";
 import cors from "cors";
 
 // 1. Initialize the Express application
@@ -19,7 +20,5 @@ app.get("/", (req: Request, res: Response) => {
 
 // 4. Start the server and listen for requests
 app.listen(PORT, () => {
-  console.log(
-    `[SERVER] Cyberpunk RPG Backend running on http://localhost:${PORT}`,
-  );
+  console.log(`[SERVER] Skills Progress running on http://localhost:${PORT}`);
 });

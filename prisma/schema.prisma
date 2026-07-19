@@ -1,0 +1,56 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Categories dictate timer length and decay penalties
+enum SkillCategory {
+  INTELLECTUAL
+  PHYSICAL
+}
+
+// Tracks the specific action performed for history charts
+enum ActionType {
+  GRIND     // +EXP
+  MAINTAIN  // Timer Reset
+  DECAY     // Penalty (-EXP)
+}
+
+model Avatar {
+  id        String   @id @default(uuid())
+  authUid   String   @unique // Unique Firebase Auth ID
+  name      String   @default("V")
+  theme     String   @default("cyberpunk-dark")
+  language  String   @default("en")
+
+  skills    Skill[]
+}
+
+model Skill {
+  id              String        @id @default(uuid())
+  avatarId        String
+  name            String
+  category        SkillCategory
+  level           Int           @default(1)
+  exp             Int           @default(0)
+  lastTrainedAt   DateTime      @default(now()) // Core field for decay calculation
+
+  avatar          Avatar        @relation(fields: [avatarId], references: [id])
+  logs            ActivityLog[]
+}
+
+model ActivityLog {
+  id              String     @id @default(uuid())
+  skillId         String
+  actionType      ActionType
+  expChange       Int
+  durationMinutes Int
+  createdAt       DateTime   @default(now())
+
+  skill           Skill      @relation(fields: [skillId], references: [id])
+}
