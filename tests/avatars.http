@@ -1,0 +1,9 @@
+### Create a new Avatar
+POST http://localhost:3000/api/avatars
+Content-Type: application/json
+
+{
+  "authUid": "dummy-firebase-uid-001",
+  "name": "V",
+  "theme": "dark"
+}
