@@ -1,7 +1,7 @@
 import express from "express";
 import type { Request, Response } from "express";
 import cors from "cors";
-import avatarRoutes from "./routes/avatar.routes.js"; // <-- Add this import
+import avatarRoutes from "./routes/avatar.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // --- ROUTES ---
-app.use("/api/avatars", avatarRoutes); // <-- Connect the router here
+app.use("/api/avatars", avatarRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
