@@ -4,6 +4,7 @@ import cors from "cors";
 import avatarRoutes from "./routes/avatar.routes.js";
 import skillRoutes from "./routes/skills.routes.js";
 import tasksRoutes from "./routes/tasks.routes.js";
+import sessionRoutes from "./routes/sessions.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api/avatars", avatarRoutes);
 app.use("/api/skills", skillRoutes);
 app.use("/api/tasks", tasksRoutes);
+app.use("/api/sessions", sessionRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
