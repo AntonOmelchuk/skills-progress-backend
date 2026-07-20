@@ -35,6 +35,7 @@ model Skill {
   id              String        @id @default(uuid())
   avatarId        String
   name            String
+  description     String?
   category        SkillCategory
   level           Int           @default(1)
   exp             Int           @default(0)

@@ -1,0 +1,24 @@
+@avatarId = 5f9200c6-2c49-48ba-beb6-7515f9e5c7f3
+@skillId = d07a36dd-6d36-4717-963a-5d4b88298f2a
+
+### Create a new Skill
+POST http://localhost:3000/api/skills
+Content-Type: application/json
+
+{
+  "avatarId": "{{avatarId}}",
+  "name": "English",
+  "description": "Leveling up conversational and technical English",
+  "category": "INTELLECTUAL"
+}
+
+### Fetch Skills by Avatar ID
+GET http://localhost:3000/api/skills/{{avatarId}}
+
+### Add EXP to Skill
+PATCH http://localhost:3000/api/skills/{{skillId}}/exp
+Content-Type: application/json
+
+{
+  "expToAdd": 150
+}
