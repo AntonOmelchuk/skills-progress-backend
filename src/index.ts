@@ -16,7 +16,7 @@ app.use("/api/skills", skillRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
-    message: "System Online. Welcome to Night City.",
+    message: "System Online.",
     status: "Operational",
   });
 });
