@@ -1,16 +1,19 @@
 import express from "express";
 import type { Request, Response } from "express";
 import cors from "cors";
+import avatarRoutes from "./routes/avatar.routes.js";
+import skillRoutes from "./routes/skills.routes.js";
 
-// 1. Initialize the Express application
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 2. Apply global middlewares
-app.use(cors()); // Allows your React frontend to communicate with this API
-app.use(express.json()); // Allows the server to understand JSON requests
+app.use(cors());
+app.use(express.json());
 
-// 3. Define a simple test route (Health Check)
+// --- ROUTES ---
+app.use("/api/avatars", avatarRoutes);
+app.use("/api/skills", skillRoutes);
+
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     message: "System Online. Welcome to Night City.",
@@ -18,7 +21,8 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-// 4. Start the server and listen for requests
 app.listen(PORT, () => {
-  console.log(`[SERVER] Skills Progress running on http://localhost:${PORT}`);
+  console.log(
+    `[SERVER] Skills Progress Backend running on http://localhost:${PORT}`,
+  );
 });
