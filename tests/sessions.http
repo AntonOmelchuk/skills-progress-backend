@@ -1,0 +1,15 @@
+@skillId = d07a36dd-6d36-4717-963a-5d4b88298f2a
+
+### Start a Study Session
+POST http://localhost:3000/api/sessions/start
+Content-Type: application/json
+
+{
+  "skillId": "{{skillId}}"
+}
+
+### Stop the Study Session
+### use id from the previous test
+@sessionId = 043112ce-3ace-4c5a-b9fc-a7a7f5a1d8cc
+
+PATCH http://localhost:3000/api/sessions/{{sessionId}}/end

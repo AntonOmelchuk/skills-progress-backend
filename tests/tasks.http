@@ -1,0 +1,15 @@
+@skillId = d07a36dd-6d36-4717-963a-5d4b88298f2a
+@taskId = b1e738ba-e490-422c-8f35-492c81d0e87d
+
+### Create a new Task
+POST http://localhost:3000/api/tasks
+Content-Type: application/json
+
+{
+  "skillId": "{{skillId}}",
+  "title": "Manual Test",
+  "expReward": 50
+}
+
+### Complete Task
+PATCH http://localhost:3000/api/tasks/{{taskId}}/complete
