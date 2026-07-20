@@ -1,9 +1,15 @@
 import { Router } from "express";
-import { createAvatar } from "../controllers/avatar.controller.js"; // Note the .js extension
+// Update this line to import both functions:
+import {
+  createAvatar,
+  getAvatarByUid,
+} from "../controllers/avatar.controller.js";
 
 const router = Router();
 
-// When a POST request hits this router, run the createAvatar function
 router.post("/", createAvatar);
+
+// Add this line. The :authUid acts as a dynamic variable in the URL.
+router.get("/:authUid", getAvatarByUid);
 
 export default router;
