@@ -21,12 +21,26 @@ enum ActionType {
   DECAY     // Penalty (-EXP)
 }
 
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   // We will encrypt this before saving!
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // The 1-to-1 link to their character
+  avatar    Avatar?
+}
+
 model Avatar {
   id        String   @id @default(uuid())
-  authUid   String   @unique // Unique Firebase Auth ID
+  authUid   String   @unique @default(uuid())
   name      String   @default("V")
   theme     String   @default("cyberpunk-dark")
   language  String   @default("en")
+
+  userId    String?  @unique
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   skills    Skill[]
 }

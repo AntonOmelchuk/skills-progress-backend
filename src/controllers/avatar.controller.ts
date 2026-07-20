@@ -58,3 +58,44 @@ export const getAvatarByUid = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const getDashboard = async (req: Request, res: Response) => {
+  try {
+    // 1. Get the userId that the middleware injected into the request
+    const userId = req.userId;
+
+    if (!userId) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    // 2. Query for the Avatar that belongs to this specific userId
+    const dashboardData = await prisma.avatar.findUnique({
+      where: { userId }, // Use userId instead of id
+      include: {
+        skills: {
+          include: {
+            tasks: {
+              where: { isCompleted: false },
+              orderBy: { createdAt: "desc" },
+            },
+            studySessions: {
+              orderBy: { createdAt: "desc" },
+              take: 5,
+            },
+          },
+        },
+      },
+    });
+
+    if (!dashboardData) {
+      res.status(404).json({ error: "Avatar not found" });
+      return;
+    }
+
+    res.status(200).json(dashboardData);
+  } catch (error) {
+    console.error("[ERROR] Failed to fetch dashboard:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
