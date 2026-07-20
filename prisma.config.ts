@@ -3,22 +3,12 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
-// 1. Extract the variable
-const databaseUrl = process.env.DATABASE_URL;
-
-// 2. Fail fast and loudly if it doesn't exist
-if (!databaseUrl) {
-  throw new Error(
-    "CRITICAL ERROR: DATABASE_URL environment variable is not set.",
-  );
-}
-
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: databaseUrl,
+    url: process.env["DATABASE_URL"],
   },
 });
