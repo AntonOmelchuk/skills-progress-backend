@@ -1,15 +1,15 @@
 import { Router } from "express";
-// Update this line to import both functions:
 import {
   createAvatar,
-  getAvatarByUid,
+  getDashboard,
 } from "../controllers/avatar.controller.js";
+import { protect } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 router.post("/", createAvatar);
 
-// Add this line. The :authUid acts as a dynamic variable in the URL.
-router.get("/:authUid", getAvatarByUid);
+// Protected route
+router.get("/me/dashboard", protect, getDashboard);
 
 export default router;

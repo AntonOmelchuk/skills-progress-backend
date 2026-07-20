@@ -1,0 +1,16 @@
+### 1. Login to get a token
+# @name loginRequest
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test-player@nightcity.com",
+  "password": "supersecurepassword"
+}
+
+### 2. Extract the token from the response
+@token = {{loginRequest.response.body.token}}
+
+### 3. Get the Protected Dashboard
+GET http://localhost:3000/api/avatars/me/dashboard
+Authorization: Bearer {{token}}

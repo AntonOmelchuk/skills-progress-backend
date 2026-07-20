@@ -1,4 +1,5 @@
 @authUid = dummy-firebase-uid-001
+@avatarId = 5f9200c6-2c49-48ba-beb6-7515f9e5c7f3
 
 ### Create a new Avatar
 POST http://localhost:3000/api/avatars
@@ -12,3 +13,6 @@ Content-Type: application/json
 
 ### Fetch Avatar by UID
 GET http://localhost:3000/api/avatars/{{authUid}}
+
+### Get Full User Dashboard
+GET http://localhost:3000/api/avatars/{{avatarId}}/dashboard
