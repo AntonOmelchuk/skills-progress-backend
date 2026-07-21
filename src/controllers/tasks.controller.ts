@@ -88,7 +88,7 @@ export const completeTask = async (req: Request, res: Response) => {
       }),
       prisma.skill.update({
         where: { id: skill.id },
-        data: { exp: newExp, level: newLevel },
+        data: { exp: newExp, level: newLevel, lastTrainedAt: new Date() }, // Reset decay timer
       }),
     ]);
 
