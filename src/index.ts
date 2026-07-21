@@ -6,6 +6,7 @@ import skillRoutes from "./routes/skills.routes.js";
 import tasksRoutes from "./routes/tasks.routes.js";
 import sessionRoutes from "./routes/sessions.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import planRoutes from "./routes/plans.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ app.use("/api/skills", skillRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/plans", planRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({

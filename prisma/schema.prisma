@@ -65,6 +65,7 @@ model Task {
   id              String     @id @default(uuid())
   skillId         String
   title           String
+  description     String?
   expReward       Int
   durationMinutes Int        @default(30) // 👈 ADD THIS: Helps user and AI time-budget
   isCompleted     Boolean    @default(false)
@@ -80,7 +81,7 @@ model StudySession {
   skillId   String
   startTime DateTime  @default(now())
   endTime   DateTime? // Optional because it starts as empty until the timer stops!
-  earnedExp Int? // Optional because you don't earn it until you finish!
+  earnedExp Int?      // Optional because you don't earn it until you finish!
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   skill     Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)

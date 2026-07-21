@@ -2,12 +2,8 @@ import type { Request, Response } from "express";
 import prisma from "../../prisma/index.js";
 
 export const createTask = async (req: Request, res: Response) => {
-  console.log("start");
   try {
     const { skillId, title, expReward } = req.body;
-    console.log("skillId", skillId);
-    console.log("title", title);
-    console.log("expReward", expReward);
     // Strict validation for relationships and types
     if (!skillId || typeof skillId !== "string") {
       res
