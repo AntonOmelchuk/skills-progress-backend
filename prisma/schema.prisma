@@ -16,71 +16,74 @@ enum SkillCategory {
 
 // Tracks the specific action performed for history charts
 enum ActionType {
-  GRIND     // +EXP
-  MAINTAIN  // Timer Reset
-  DECAY     // Penalty (-EXP)
+  GRIND // +EXP
+  MAINTAIN // Timer Reset
+  DECAY // Penalty (-EXP)
 }
 
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
-  password  String   // We will encrypt this before saving!
+  password  String // We will encrypt this before saving!
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // The 1-to-1 link to their character
-  avatar    Avatar?
+  avatar Avatar?
 }
 
 model Avatar {
-  id        String   @id @default(uuid())
-  authUid   String   @unique @default(uuid())
-  name      String   @default("V")
-  theme     String   @default("cyberpunk-dark")
-  language  String   @default("en")
+  id       String @id @default(uuid())
+  authUid  String @unique @default(uuid())
+  name     String @default("V")
+  theme    String @default("cyberpunk-dark")
+  language String @default("en")
 
-  userId    String?  @unique
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  skills    Skill[]
+  skills Skill[]
 }
 
 model Skill {
-  id              String        @id @default(uuid())
-  avatarId        String
-  name            String
-  description     String?
-  category        SkillCategory
-  level           Int           @default(1)
-  exp             Int           @default(0)
-  lastTrainedAt   DateTime      @default(now()) // Core field for decay calculation
+  id            String        @id @default(uuid())
+  avatarId      String
+  name          String
+  description   String?
+  category      SkillCategory
+  level         Int           @default(1)
+  exp           Int           @default(0)
+  lastTrainedAt DateTime      @default(now()) // Core field for decay calculation
 
-  avatar          Avatar        @relation(fields: [avatarId], references: [id])
-  logs            ActivityLog[]
-  tasks           Task[]
-  studySessions   StudySession[]
+  avatar        Avatar         @relation(fields: [avatarId], references: [id])
+  logs          ActivityLog[]
+  tasks         Task[]
+  studySessions StudySession[]
 }
 
 model Task {
-  id          String   @id @default(uuid())
-  skillId     String
-  title       String
-  expReward   Int
-  isCompleted Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  skill       Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  id              String     @id @default(uuid())
+  skillId         String
+  title           String
+  expReward       Int
+  durationMinutes Int        @default(30) // 👈 ADD THIS: Helps user and AI time-budget
+  isCompleted     Boolean    @default(false)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  skill           Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  dailyPlanId     String?
+  dailyPlan       DailyPlan? @relation(fields: [dailyPlanId], references: [id], onDelete: SetNull)
 }
 
 model StudySession {
-  id          String   @id @default(uuid())
-  skillId     String
-  startTime   DateTime @default(now())
-  endTime     DateTime? // Optional because it starts as empty until the timer stops!
-  earnedExp   Int?      // Optional because you don't earn it until you finish!
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  skill       Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  id        String    @id @default(uuid())
+  skillId   String
+  startTime DateTime  @default(now())
+  endTime   DateTime? // Optional because it starts as empty until the timer stops!
+  earnedExp Int? // Optional because you don't earn it until you finish!
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  skill     Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
 }
 
 model ActivityLog {
@@ -91,5 +94,14 @@ model ActivityLog {
   durationMinutes Int
   createdAt       DateTime   @default(now())
 
-  skill           Skill      @relation(fields: [skillId], references: [id])
+  skill Skill @relation(fields: [skillId], references: [id])
+}
+
+model DailyPlan {
+  id       String   @id @default(uuid())
+  avatarId String
+  summary  String? // AI's brief advice/motto for the day
+  date     DateTime @default(now()) // Keeps track of which day this plan belongs to
+
+  tasks Task[] // Or link tasks via a relation if you want to query today's plan directly
 }
