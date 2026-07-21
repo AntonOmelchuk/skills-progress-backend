@@ -1,24 +1,55 @@
-@avatarId = 5f9200c6-2c49-48ba-beb6-7515f9e5c7f3
-@skillId = d07a36dd-6d36-4717-963a-5d4b88298f2a
+### 1. Login to get the JWT token
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
 
-### Create a new Skill
+{
+  "email": "test-player@nightcity.com",
+  "password": "supersecurepassword"
+}
+
+### Store the token from the login response
+@token = {{login.response.body.token}}
+
+### 2. Get Avatar ID from the Protected Dashboard
+# @name dashboard
+GET http://localhost:3000/api/avatars/me/dashboard
+Authorization: Bearer {{token}}
+
+### Store the avatarId from the dashboard response
+@avatarId = {{dashboard.response.body.id}}
+
+### 3. Create a new Skill
+# @name createSkill
 POST http://localhost:3000/api/skills
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "avatarId": "{{avatarId}}",
-  "name": "English",
-  "description": "Leveling up conversational and technical English",
+  "name": "Backend Development",
   "category": "INTELLECTUAL"
 }
 
-### Fetch Skills by Avatar ID
-GET http://localhost:3000/api/skills/{{avatarId}}
+### Store the skillId from the newly created skill response
+@skillId = {{createSkill.response.body.id}}
 
-### Add EXP to Skill
-PATCH http://localhost:3000/api/skills/{{skillId}}/exp
+### 4. Create a Quest linked to the new Skill
+# @name createTask
+POST http://localhost:3000/api/tasks
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "expToAdd": 150
+  "skillId": "{{skillId}}",
+  "title": "Build manual skills controller",
+  "description": "Create CRUD endpoints before wiring up Gemini",
+  "expReward": 150
 }
+
+### Store the taskId from the created task response
+@taskId = {{createTask.response.body.id}}
+
+### 5. Complete the Quest & Earn XP!
+PATCH http://localhost:3000/api/tasks/{{taskId}}/complete
+Authorization: Bearer {{token}}
